@@ -38,7 +38,7 @@ func flatTags(t tags) []string {
 }
 
 func (t *tag) PathsToAllAncestors() [][]string {
-	return ancestors(t, [][]string{[]string{t.name}})
+	return ancestors(t, [][]string{{t.name}})
 }
 
 func (t *tag) PathsToAllAncestorsAsString(delim string) []string {
