@@ -70,10 +70,28 @@ func (t *tags) AddChildToTag(child, parent string) {
 	t.SetTag(parent)
 	childTag, _, _ := t.get(child)
 	parentTag, _, _ := t.get(parent)
-	childTag.parentTags = append(childTag.parentTags, parentTag)
-	sort.Sort(&childTag.parentTags)
-	parentTag.childTags = append(parentTag.childTags, childTag)
-	sort.Sort(&parentTag.childTags)
+
+	var hasParent bool
+	for _, p := range childTag.Parents() {
+		if p == parentTag.Name() {
+			hasParent = true
+		}
+	}
+	if !hasParent {
+		childTag.parentTags = append(childTag.parentTags, parentTag)
+		sort.Sort(&childTag.parentTags)
+	}
+
+	var hasChild bool
+	for _, c := range parentTag.Children() {
+		if c == childTag.Name() {
+			hasChild = true
+		}
+	}
+	if !hasChild {
+		parentTag.childTags = append(parentTag.childTags, childTag)
+		sort.Sort(&parentTag.childTags)
+	}
 }
 
 func (t *tags) RemoveChildFromTag(child, parent string) {
